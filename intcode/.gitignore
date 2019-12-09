@@ -1,2 +1,4 @@
 node_modules/
-intcode.js
+build/
+.nyc_output/
+coverage/
