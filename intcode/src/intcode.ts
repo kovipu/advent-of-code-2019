@@ -35,4 +35,4 @@ const compute = (program: number[]): number[] => {
   return data;
 }
 
-export default compute;
+module.exports = compute;
