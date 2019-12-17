@@ -34,8 +34,9 @@ const compute = (program: number[]): number[] => {
       
       case OP_INPUT:
         const input = readlineSync.question('User input: ');
-        console.log('asd', input);
-        data[data[program_counter + 1]] = parseInt(input);
+        const inputParsed = parseInt(input);
+        if (isNaN(inputParsed)) throw new Error(`Invalid input: ${input}`);
+        data[data[program_counter + 1]] = inputParsed;
         program_counter += 2;
         break;
       
@@ -47,4 +48,4 @@ const compute = (program: number[]): number[] => {
   return data; // this is against the spec and should prolly throw an error or whatevs ¯\_(ツ)_/¯
 }
 
-module.exports = compute; // this bullshit export to work with non modules
+module.exports = compute; // this bullshit export to work with non-module JS
