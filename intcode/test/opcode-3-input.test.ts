@@ -12,14 +12,14 @@ describe('opcode 3 takes input from user', () => {
 
   it('stores value 123 in address 0', () => {
     const input = [3, 0, 99];
-    const output = [123, 0, 99]
+    const output = [123, 0, 99];
     roboInput('123');
     expect(compute(input)).eql(output);
   })
 
-  it('throws invalid input', () => {
+  it('throws on invalid input', () => {
     const input = [3, 0, 99];
     roboInput('CRASH');
-    expect(() => compute(input)).to.throw;
+    expect(() => compute(input)).to.throw();
   })
 });

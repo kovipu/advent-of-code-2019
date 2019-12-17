@@ -3,6 +3,7 @@ import readlineSync from 'readline-sync';
 const OP_ADD = 1;
 const OP_MULTIPLY = 2;
 const OP_INPUT = 3;
+const OP_OUTPUT = 4;
 const OP_HALT = 99;
 
 const compute = (program: number[]): number[] => {
@@ -40,6 +41,11 @@ const compute = (program: number[]): number[] => {
         program_counter += 2;
         break;
       
+      case OP_OUTPUT:
+        console.log(data[data[program_counter + 1]]);
+        program_counter += 2;
+        break;
+
       default:
         throw new Error(`Operation not defined: ${current_value}`);
     }
