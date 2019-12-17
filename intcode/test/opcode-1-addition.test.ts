@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import compute from '../src/intcode';
+const compute = require('../src/intcode');
 
 describe('opcode 1 should do addition', () => {
 

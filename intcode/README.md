@@ -6,8 +6,9 @@ Intcode computer reads integers as input, some of which take arguments immediate
 
 ## Opcodes
 
-| Name           | Opcode | Format  | Action           |
-| -------------- | ------ | ------- | ---------------- |
-| Addition       | 1      | 1 a b c | c = a + b        |
-| Multiplication | 2      | 1 a b c | c = a * b        |
-| Halt           | 99     | 99      | Halt immediately |
+| Name           | Opcode | Format  | Action                 |
+| -------------- | ------ | ------- | ---------------------- |
+| Addition       | 1      | 1 a b c | c = a + b              |
+| Multiplication | 2      | 2 a b c | c = a * b              |
+| Input          | 3      | 3 a     | memory[a] = user input |
+| Halt           | 99     | 99      | Halt immediately       |
