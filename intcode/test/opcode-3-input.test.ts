@@ -11,7 +11,15 @@ const roboInput = (input: string) => {
 describe('opcode 3 takes input from user', () => {
 
   it('stores value 123 in address 0', () => {
+    const input = [3, 0, 99];
+    const output = [123, 0, 99]
     roboInput('123');
-    expect(compute([3, 0, 99])).eql([123, 0, 99]);
+    expect(compute(input)).eql(output);
+  })
+
+  it('throws invalid input', () => {
+    const input = [3, 0, 99];
+    roboInput('CRASH');
+    expect(() => compute(input)).to.throw;
   })
 });
