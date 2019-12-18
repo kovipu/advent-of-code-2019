@@ -11,4 +11,11 @@ describe('opcode 4 outputs', () => {
     const computed = stdout.inspectSync(() => compute(input))[0];
     expect(computed).to.include(output);
   })
+
+  it('Should print -123', () => {
+    const input = [104, -123, 99];
+    const output = '-123';
+    const computed = stdout.inspectSync(() => compute(input))[0];
+    expect(computed).to.include(output);
+  })
 });

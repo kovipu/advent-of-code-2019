@@ -9,4 +9,10 @@ describe('opcode 1 should do addition', () => {
     const output = [2, 0, 0, 0, 99];
     expect(compute(input)).eql(output);
   })
+
+  it('should use 3 as immediate and write 3 + 8 to position 5', () => {
+    const input = [1001, 3, 3, 5, 99, 0];
+    const output = [1001, 3, 3, 5, 99, 8];
+    expect(compute(input)).eql(output);
+  })
 });

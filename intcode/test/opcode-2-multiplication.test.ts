@@ -15,4 +15,10 @@ describe('opcode 2 should do multiplication', () => {
     const output = [2,4,4,5,99,9801];
     expect(compute(input)).eql(output);
   })
+
+  it('should use 3 as immediate and write 3 * 5 to position 5', () => {
+    const input = [1002, 3, 3, 5, 99, 0];
+    const output = [1002, 3, 3, 5, 99, 15];
+    expect(compute(input)).eql(output);
+  })
 });

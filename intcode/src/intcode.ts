@@ -12,21 +12,32 @@ const compute = (program: number[]): number[] => {
 
   while (program_counter < data.length) {
     const current_value: number = data[program_counter];
+    const opcode: number = parseInt(current_value.toString().slice(-2));
 
     // helper function to execute a three operand operation with a changing function
     // this is pretty darn ugly but it works so...
-    const threeOperand = (data: number[], idx: number, fn: (a: number, b: number) => number) => {
-      data[data[idx + 3]] = fn(data[data[idx + 1]], data[data[idx + 2]]);
+    const threeOperand = (data: number[], idx: number, value: number) => {
+      const opcode: number = parseInt(value.toString().slice(-2));
+      const imm_mode_1: boolean = value.toString().slice(-3, -2) === '1';
+      const imm_mode_2: boolean = value.toString().slice(-4, -3) === '1';
+      // operand 3 is never in immediate mode as it's the write address123
+      // const imm_mode_3: boolean = value.toString().slice(-5, -4) === '1';
+      
+      const operand1: number = imm_mode_1
+        ? data[idx + 1]
+        : data[data[idx+1]];
+      const operand2: number = imm_mode_2
+        ? data[idx + 2]
+        : data[data[idx + 2]];
+
+      const result = opcode === 1 ? operand1 + operand2 : operand1 * operand2;
+      data[data[idx + 3]] = result;
     }
 
-    switch(current_value) {
+    switch(opcode) {
       case OP_ADD:
-        threeOperand(data, program_counter, (a, b) => a + b);
-        program_counter += 4;
-        break;
-      
       case OP_MULTIPLY:
-        threeOperand(data, program_counter, (a, b) => a * b);
+        threeOperand(data, program_counter, current_value);
         program_counter += 4;
         break;
 
@@ -42,7 +53,11 @@ const compute = (program: number[]): number[] => {
         break;
       
       case OP_OUTPUT:
-        console.log(data[data[program_counter + 1]]);
+        const imm_mode: boolean = current_value.toString().slice(-3, -2) === '1';
+        const value: number = imm_mode
+          ? data[program_counter + 1]
+          : data[data[program_counter + 1]];
+        console.log(value);
         program_counter += 2;
         break;
 
