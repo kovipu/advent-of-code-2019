@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 const compute = require('../src/intcode');
 
-describe('opcode 5 should jump if first parameter is non-zero', () => {
+describe('opcode 6 should jump if first parameter is zero', () => {
   
   it('should write 6 + 6 to position 9', () => {
     const input = [6, 6, 3, 5, 99, 1, 0, 1, 10, 99, 0];

@@ -1,5 +1,4 @@
 import readlineSync from 'readline-sync';
-import { parse } from 'path';
 
 // arithmetic
 const OP_ADD = 1;
@@ -12,6 +11,8 @@ const OP_OUTPUT = 4;
 // comparison
 const OP_JUMP_IF_TRUE = 5;
 const OP_JUMP_IF_FALSE = 6;
+const OP_LESS_THAN = 7;
+const OP_EQUALS = 8;
 
 const OP_HALT = 99;
 
@@ -32,24 +33,37 @@ const compute = (program: number[]): number[] => {
     const current_value: number = data[program_counter];
     const opcode: number = parseInt(current_value.toString().slice(-2));
 
-    // helper function to execute a three operand operation with a changing function
+    // helper function to execute a three operand operation
     // this is pretty darn ugly but it works so...
     const threeOperand = (data: number[], idx: number, value: number) => {
       const [opcode, imm_mode_1, imm_mode_2, _] = parseInstruction(value);
       
-      const operand1: number = imm_mode_1
-        ? data[idx + 1]
-        : data[data[idx+1]];
-      const operand2: number = imm_mode_2
-        ? data[idx + 2]
-        : data[data[idx + 2]];
+      const operand1: number = imm_mode_1 ? data[idx + 1] : data[data[idx+1]];
+      const operand2: number = imm_mode_2 ? data[idx + 2] : data[data[idx + 2]];
 
-      const result = opcode === 1 ? operand1 + operand2 : operand1 * operand2;
+      let result: number;
+      switch (opcode) {
+        case OP_ADD:
+          result = operand1 + operand2;
+          break;
+        case OP_MULTIPLY:
+          result = operand1 * operand2;
+          break;
+        case OP_LESS_THAN:
+          result = operand1 < operand2 ? 1 : 0;
+          break;
+        case OP_EQUALS:
+          result = operand1 === operand2 ? 1 : 0;
+          break;
+        default:
+          throw new Error(`Operation not defined: ${value}`);
+      }
+      
       data[data[idx + 3]] = result;
     }
 
     // helper function for comparison operations
-    const comparison = (data: number[], idx: number, value: number) => {
+    const compare = (data: number[], idx: number, value: number) => {
       const [opcode, imm_mode_1, imm_mode_2, _] = parseInstruction(value);
 
       const operand1: number = imm_mode_1 ? data[idx + 1] : data[data[idx + 1]];
@@ -66,6 +80,8 @@ const compute = (program: number[]): number[] => {
     switch(opcode) {
       case OP_ADD:
       case OP_MULTIPLY:
+      case OP_LESS_THAN:
+      case OP_EQUALS:
         threeOperand(data, program_counter, current_value);
         program_counter += 4;
         break;
@@ -92,7 +108,7 @@ const compute = (program: number[]): number[] => {
 
       case OP_JUMP_IF_TRUE:
       case OP_JUMP_IF_FALSE:
-        comparison(data, program_counter, current_value);
+        compare(data, program_counter, current_value);
         break;
 
       default:
