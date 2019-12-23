@@ -41,23 +41,14 @@ const compute = (program: number[]): number[] => {
       const operand1: number = imm_mode_1 ? data[idx + 1] : data[data[idx+1]];
       const operand2: number = imm_mode_2 ? data[idx + 2] : data[data[idx + 2]];
 
-      let result: number;
-      switch (opcode) {
-        case OP_ADD:
-          result = operand1 + operand2;
-          break;
-        case OP_MULTIPLY:
-          result = operand1 * operand2;
-          break;
-        case OP_LESS_THAN:
-          result = operand1 < operand2 ? 1 : 0;
-          break;
-        case OP_EQUALS:
-          result = operand1 === operand2 ? 1 : 0;
-          break;
-        default:
-          throw new Error(`Operation not defined: ${value}`);
+      const operations: { [key: number]: (a: number, b: number) => number } = {
+        [OP_ADD]: (a, b) => a + b,
+        [OP_MULTIPLY]: (a, b) => a * b,
+        [OP_LESS_THAN]: (a, b) => a < b ? 1 : 0,
+        [OP_EQUALS]: (a, b) => a === b ? 1 : 0
       }
+
+      const result: number = operations[opcode](operand1, operand2);
       
       data[data[idx + 3]] = result;
     }
